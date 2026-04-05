@@ -8,6 +8,7 @@
   import NodeTooltip from '$lib/components/NodeTooltip.svelte';
   import DataImportModal from '$lib/components/DataImportModal.svelte';
   import H3CellPanel from '$lib/components/H3CellPanel.svelte';
+  import BootScreen from '$lib/components/BootScreen.svelte';
   import { infraStore } from '$lib/stores/infra.svelte';
   import { analysisStore } from '$lib/stores/analysis.svelte';
   import { editModeStore } from '$lib/stores/editMode.svelte';
@@ -62,6 +63,7 @@
   let isComputingWorstCase = $state(false);
 
   let mapComponent: ReturnType<typeof MapView> | null = null;
+  let bootComplete = $state(false);
 
   // ── Filtered nodes ────────────────────────────────────────────
   const filteredNodes = $derived(infraStore.nodes.filter(n => {
@@ -358,6 +360,10 @@
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
+
+{#if !bootComplete}
+  <BootScreen onComplete={() => bootComplete = true} />
+{/if}
 
 <div class="w-screen h-screen flex flex-col overflow-hidden bg-[#070A0E]">
   <TopBar
